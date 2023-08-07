@@ -1,80 +1,22 @@
 import React, { useEffect, useState, useRef } from "react";
-// import Map from "mapmyindia-react";
 import logo from "../assets/safeair.png";
 import emp from "../assets/teamwork.png";
-// import { useMemo } from "react";
-// import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
-import markerLogo from "../assets/location.svg";
 import "leaflet/dist/leaflet.css";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-
-// import Map, { Marker } from "react-map-gl";
-
-// ============React leaflet==============
-
-// import {
-// 	MapContainer,
-// 	TileLayer,
-// 	useMap,
-// 	Popup,
-// 	Marker,
-// } from "react-leaflet";
-// import { useMapEvents } from 'react-leaflet/hooks'
-// import L from "leaflet";
-
-// import {
-// 	Card,
-// 	Typography,
-// 	List,
-// 	ListItem,
-// 	ListItemPrefix,
-// 	ListItemSuffix,
-// 	Chip,
-// } from "@material-tailwind/react";
 
 import { getDatabase, ref, onValue } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { marker } from "leaflet";
 
-// ++++++++++++++++Imports =============================
-
-// delete L.Icon.Default.prototype._getIconUrl;
-
-// L.Icon.Default.mergeOptions({
-// 	iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
-// 	iconUrl: require("leaflet/dist/images/marker-icon.png"),
-// 	shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
-// });
-
-mapboxgl.accessToken =
-	"pk.eyJ1IjoibXNhbWlkZXYiLCJhIjoiY2xqc213cDdlMGFxbzNocXNyeTc4MGhlMyJ9.Gl7IzxtX3SOQ8fcHNwTpJw";
-
-// function MyComponent(lat, long) {
-// 	const map = useMapEvents({
-// 		click: () => {
-// 		  map.locate()
-// 		},
-// 		locationfound(e) {
-// 			map.flyTo(e.latlng, 20)
-// 		  },
-// 	})
-// 	  return null
-// }
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
 const UserList = () => {
 	const [users, setUsers] = useState([]);
 	const [userData, setUserData] = useState();
-	const [userNames, setUserNames] = useState([]);
 	const navigate = useNavigate();
-	const [userEmail, setUserEmail] = useState("");
-	const [markerpos, setMarkerpos] = useState("LPesGc3yWse800rPZzvIViUYYUv2");
-
-	const initialRender = useRef(true);
-
 	const mapContainer = useRef(null);
 	const map = useRef(null);
 	const [lat, setLat] = useState(18.472424188489);
@@ -96,7 +38,6 @@ const UserList = () => {
 		});
 	}, []);
 
-	let marker = useRef(null);
 	useEffect(() => {
 		let intervalId = null;
 		intervalId = setInterval(() => {
@@ -104,34 +45,29 @@ const UserList = () => {
 			const starCountRef = ref(db, "locations/");
 			onValue(starCountRef, (snapshot) => {
 				const data = snapshot.val();
-				console.log(Object.keys(data));
-				console.log(data);
 				setUsers(Object.keys(data));
+				const keys = Object.keys(data);
 				setUserData(data);
-				
-				// if (uid == "") {
-				// 	console.log("uid is null");
-				// } else {
-				// 	setLat(userData[uid].latitude);
-				// 	setLng(userData[uid].longitude);
-				// 	setUserEmail(userData[uid].email);
-				// }
-				users.forEach((user) => {
-					marker.setLngLat([
-							userData[user].longitude,
-							userData[user].latitude
-						])
-				});
+				var geojson3 = {
+					type: "FeatureCollection",
+					features: [],
+				};
+				for (let i = 0; i < keys.length; i++) {
+					geojson3.features.push({
+						type: "Feature",
+						geometry: {
+							type: "Point",
+							coordinates: [
+								data[keys[i]].longitude,
+								data[keys[i]].latitude,
+							],
+						},
+					});
+				}
+				console.log("Geo json  " + JSON.stringify(geojson3));
+				map.current.getSource("loc").setData(geojson3);
 			});
 		}, 1000);
-		users.forEach((user) => {
-			marker = new mapboxgl.Marker()
-				.setLngLat([
-					userData[user].longitude,
-					userData[user].latitude
-				])
-				.addTo(map.current);
-		});
 		return () => {
 			clearInterval(intervalId);
 		};
@@ -145,43 +81,27 @@ const UserList = () => {
 			center: [lng, lat],
 			zoom: zoom,
 		});
-		// Set marker options.
 
-		// for(var i = 0; i < users.length; i++){
-		// 	const marker = new mapboxgl.Marker({})
-		// 	  .setLngLat([userData[users[i]].longitude, userData[users[i]].latitude])
-		// 	  .addTo(map.current);
-		//   }
-		// const marker = new mapboxgl.Marker()
-		// 	.setLngLat([ lng , lat])
-		// 	.addTo(map.current);
+		map.current.on("load", async () => {
+			map.current.loadImage("/location.png", (error, image) => {
+				if (error) throw error;
+				map.current.addImage("pointer", image);
+				map.current.addSource("loc", {
+					type: "geojson",
+					data: userData,
+				});
+				map.current.addLayer({
+					id: "loc",
+					type: "symbol",
+					source: "loc",
+					layout: {
+						"icon-image": "pointer",
+						"icon-size": 0.25,
+					},
+				});
+			});
+		});
 	}, []);
-
-	const changeMap = (user) => {
-		// // setUid(user);
-		// let intervalId = null;
-		// intervalId = setInterval(() => {
-		setLat(userData[user].latitude);
-		setLng(userData[user].longitude);
-		setUserEmail(userData[user].email);
-		// }, 5000);
-	};
-
-	// useEffect(() => {
-	// 	if (initialRender.current) {
-	// 		initialRender.current = false;
-	// 	} else {
-	// 		let intervalId = null;
-	// 		intervalId = setInterval(() => {
-	// 			setLat(userData[uid].latitude);
-	// 			setLng(userData[uid].longitude);
-	// 			setUserEmail(userData[uid].email);
-	// 		}, 1000);
-	// 		return () => {
-	// 			clearInterval(intervalId);
-	// 		};
-	// 	}
-	// }, [uid]);
 
 	const search = () => {
 		if (document.getElementById("searchbar") == null) {
@@ -199,24 +119,6 @@ const UserList = () => {
 				}
 			}
 		}
-	};
-
-	// Hard-coded latitude and longitude values
-	const latitude = 18.47242418848995; //28.677592; // London, UK
-	const longitude = 73.91155514743757; //77.2913126;
-
-	const position = [latitude, longitude];
-
-	// const markerPositions = [
-	// 	{ lat: 51.5074, lng: -0.1278 }, // London, UK
-	// 	{ lat: 40.7128, lng: -74.0060 }, // New York City, USA
-	// 	// Add more marker positions as needed
-	//   ];
-
-	const HandleMarkerClick = (lat, long) => {
-		setMarkerpos([lat, long]);
-		console.log(markerpos);
-		// mapContainerClassName.setView(markerpos, 16);
 	};
 
 	return (
@@ -259,50 +161,25 @@ const UserList = () => {
 								{users.map((user, index) => (
 									<Link
 										key={index}
-										className="listItem flex items-center list-none list justify-center px-7 py-3 text-white bg-gray-800 my-5 mx-5 transition-colors duration-300 transform rounded-full dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+										className=" flex items-center list-none list px-7 py-3 text-white bg-gray-800 my-5 mx-5 transition-colors duration-300 transform rounded-full dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
 										onClick={() => {
-											// changeMap(user);
-											// HandleMarkerClick(
-											// 	userData[user].latitude,
-											// 	userData[user].longitude
-											// );
-											// MyComponent(
-											// 	userData[user].latitude,
-											// 	userData[user].longitude
-											// );
-											// map.flyTo([userData[user].latitude, userData[user].long])
-											// setMarkerpos(index);
-											// position = [userData[user].latitude, userData[user].longitude];
 											map.current.flyTo({
 												center: [
 													userData[user].longitude,
 													userData[user].latitude,
 												],
 												essential: true, // this animation is considered essential with respect to prefers-reduced-motion
-												zoom: 18,
+												zoom: zoom,
 												speed: 3,
 											});
-											marker = new mapboxgl.Marker()
-												.setLngLat([
-													userData[user].longitude,
-													userData[user].latitude,
-												])
-												.addTo(map.current);
 										}}
 									>
 										<span
-											className="mx-2 text-sm font-medium"
+											className="mx-3 text-sm font-medium"
 											key={index}
 										>
 											{userData[user].email}
 										</span>
-
-										<button className="   py-1 px-2  text-black text-sm bg-gray-300 rounded-full baseline hover:bg-brightRedLight">
-											Update
-										</button>
-
-										{/* {userData[user].status} == null ? ( <div className=" h-3 w-3 bg-red-500 rounded-full"></div> ) : ( <div className=" h-3 w-3 bg-green-500 rounded-full"></div> )} */}
-
 										<div
 											className={
 												userData[user].status == "offline"
@@ -368,76 +245,7 @@ const UserList = () => {
 					</div>
 				</aside>
 				<div className=" w-3/4">
-					{/* <Map
-						height="100vh"
-						zoom={16}
-						markers={[
-							{
-								position: [lat, lng],
-								title: userEmail,
-								onClick: (e) => {
-									console.log("clicked ");
-								},
-								onMouseover: (e) => {
-									// show info window with title
-								},
-							},
-						]}
-					/> */}
-					{/* <GoogleMap
-						zoom={10}
-						center={center2}
-						mapContainerClassName="map-container"
-						ClassName="map-container"
-					>
-						{markers}
-					</GoogleMap> */}
-
-					{/* <MapContainer
-						center={position}
-						zoom={20}
-						// ref={mapRef}
-						scrollWheelZoom={true}
-						style={{ height: "100vh", width: "100%" }}
-					>
-						<TileLayer
-							attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-							url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-						/>
-						{users.map((user, index) => (
-							<Marker
-								key={index}
-								position={[
-									userData[user].latitude,
-									userData[user].longitude,
-								]}
-							>
-								<Popup key={index}>
-									<span>{userData[user].email}</span>
-								</Popup>
-							</Marker>
-						))}
-						<Marker position={position}>
-							<Popup>
-								A pretty CSS3 popup. <br /> Easily customizable.
-							</Popup>
-						</Marker>
-					</MapContainer> */}
 					<div ref={mapContainer} className=" h-screen w-full"></div>
-					{/* <Map
-						mapboxAccessToken="pk.eyJ1IjoibXNhbWlkZXYiLCJhIjoiY2xqc213cDdlMGFxbzNocXNyeTc4MGhlMyJ9.Gl7IzxtX3SOQ8fcHNwTpJw"
-						initialViewState={{
-							longitude: 73.911555147437,
-							latitude: 18.472424188489,
-							zoom: 14,
-						}}
-						style={{ width: "100%", height: "100vh" }}
-						mapStyle="mapbox://styles/mapbox/streets-v9"
-					>
-						<Marker longitude={position[1]} latitude={position[0]} anchor="bottom">
-							<img src={markerLogo} />
-						</Marker>
-					</Map> */}
 				</div>
 			</div>
 		</div>
