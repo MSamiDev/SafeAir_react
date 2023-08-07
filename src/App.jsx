@@ -11,6 +11,7 @@ import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Employees from "./pages/Employees";
 import CreateEmp from "./pages/CreateEmp";
+import Home from "./pages/Home";
 
 // import io from "socket.io-client";
 // const socket = io.connect("https://vercel.com/samishaikh6810/safeair/4jGZ4s3VStyNM3MJqdZZNroT9gpS:3001");
@@ -80,12 +81,7 @@ function App() {
 			<Routes>
 				<Route
 					path="/"
-					element={
-						<>
-							<h1>Home</h1>
-							<a href="/signUp">Go to Map</a>
-						</>
-					}
+					element={<Home/>}
 				/>
 				{/* <Route path="map" element={<Mappage />} /> */}
 				{/* <Route path="map2" element={<Map/>} /> */}

@@ -45,7 +45,7 @@ function Employees() {
 			<main>
 				<div className=" flex">
 					<aside class="flex flex-col w-1/4 h-screen px-5 py-8 overflow-y-auto bg-black border-r rtl:border-r-0 rtl:border-l dark:bg-gray-900 dark:border-gray-700">
-						<a href="#">
+						<a href="/">
 							<img class="w-auto h-20 " src={logo} alt="" />
 						</a>
 
