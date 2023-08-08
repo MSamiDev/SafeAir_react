@@ -204,7 +204,7 @@ const UserList = () => {
 									</span>
 								</Link>
 							</div>
-							<div className="flex items-center justify-between mt-6">
+							<div className="flex items-center mt-6">
 								<a href="#" className="flex items-center gap-x-2">
 									<img
 										className="object-cover rounded-full h-7 w-7 profile__pic mr-2"
@@ -216,14 +216,15 @@ const UserList = () => {
 										alt="avatar"
 									/>
 									<span className="text-sm font-medium text-white dark:text-gray-200">
-										Safe Air
+										{auth.currentUser?.displayName != null
+											? auth.currentUser?.displayName
+											: "Safe Air"}
 									</span>
 								</a>
-
 								<a
 									href="#"
-									onClick={() => auth.signOut()}
-									className="text-gray-500 transition-colors duration-200 rotate-180 dark:text-gray-400 rtl:rotate-0 hover:text-blue-500 dark:hover:text-blue-400"
+									onClick={() => auth.signOut().then(navigate("/"))}
+									className="text-gray-500 transition-colors duration-200 rotate-180 dark:text-gray-400 rtl:rotate-0 hover:text-blue-500 dark:hover:text-blue-400 mx-7"
 								>
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
