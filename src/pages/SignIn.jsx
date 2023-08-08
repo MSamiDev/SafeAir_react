@@ -65,9 +65,9 @@ function SignIn() {
 				toast.success("Successfully Login !");
 				const user = userCredential.user;
 				console.log(user.displayName);
-				navigate("/userlist");
 				// ...
 			})
+			.then(navigate("/userlist"))
 			.catch((error) => {
 				const errorCode = error.code;
 				const errorMessage = error.message;
@@ -330,7 +330,7 @@ function SignIn() {
 											aria-hidden="true"
 										></div>
 									</div>
-									<div className="flex flex-wrap -mx-3">
+									{/* <div className="flex flex-wrap -mx-3">
 										<div className="w-full px-3">
 											<button
 												onClick={GoogleLogin}
@@ -348,7 +348,7 @@ function SignIn() {
 												</span>
 											</button>
 										</div>
-									</div>
+									</div> */}
 									<p class="text-sm font-light text-gray-500 dark:text-gray-400">
 										Don't have an account yet?{" "}
 										<Link

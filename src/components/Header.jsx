@@ -28,7 +28,7 @@ const Header = () => {
                 <a href="/Employees">View Employees</a>
               </li>
               <li className="font-extrabold text-3xl font-serif p-4 h-full flex justify-center items-center hover:text-blue-500 hover:underline duration-300 ease-in">
-                <a href="/SignIn">Sign in</a>
+                <a href="/signin">Sign in</a>
               </li>
             </ul>
           </div>
