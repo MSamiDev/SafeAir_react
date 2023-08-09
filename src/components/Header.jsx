@@ -19,7 +19,7 @@ const Header = () => {
           <div className="hidden md:flex items-center h-full">
             <ul className="flex items-center h-full">
               <li className="p-4 h-full flex justify-center items-center hover:text-blue-500 hover:underline duration-300 ease-in ">
-                <a href="">Admin Console</a>
+                <a href="/signin">Admin Console</a>
               </li>
               <li className="p-4 h-full flex justify-center items-center hover:text-blue-500 hover:underline duration-300 ease-in">
                 <a href="/createemployee">Create Employees</a>
