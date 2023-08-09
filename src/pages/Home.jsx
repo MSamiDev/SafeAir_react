@@ -1,13 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import map from "../assets/map.png";
 import Header from "../components/Header"; 
 
 const Home = () => {
-  const [showMenu, setShowMenu] = useState(false);
-
-  const toggleMenu = () => {
-    setShowMenu(!showMenu);
-  };
   return (
     <div className=" bg-gray-800  ">
         <Header/>
@@ -32,7 +27,7 @@ const Home = () => {
             Your well-being is our commitment.
           </p>
           <a
-            href=""
+            href="/signin"
             className=" text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 lg:ml-10 sm:m-24 m-36 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800  "
           >
             Track Employees
