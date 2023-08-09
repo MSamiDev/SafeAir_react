@@ -125,9 +125,9 @@ const UserList = () => {
 		<div>
 			<div className="flex">
 				<aside className="flex flex-col w-1/4 h-screen px-5 py-8 overflow-y-auto bg-black border-r rtl:border-r-0 rtl:border-l dark:bg-gray-900 dark:border-gray-700">
-					<a href="/">
+					<Link to={'/'}>
 						<img className="w-auto h-20 " src={logo} alt="" />
-					</a>
+					</Link>
 
 					<div className="flex flex-col justify-between flex-1 mt-6">
 						<nav className="flex-1 -mx-3 space-y-5 mt-16 ">
@@ -205,7 +205,7 @@ const UserList = () => {
 								</Link>
 							</div>
 							<div className="flex items-center mt-6">
-								<a href="/userlist" className="flex items-center gap-x-2">
+								<Link to={"/userlist"} className="flex items-center gap-x-2">
 									<img
 										className="object-cover rounded-full h-7 w-7 profile__pic mr-2"
 										src={
@@ -220,7 +220,7 @@ const UserList = () => {
 											? auth.currentUser?.displayName
 											: "Safe Air"}
 									</span>
-								</a>
+								</Link>
 								<a
 									href="#"
 									onClick={() => auth.signOut().then(navigate("/"))}
