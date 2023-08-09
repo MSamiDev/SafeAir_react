@@ -34,29 +34,29 @@ function SignIn() {
 		});
 	}, []);
 
-	const GoogleLogin = () => {
-		const auth = getAuth();
-		signInWithPopup(auth, provider)
-			.then((result) => {
-				// This gives you a Google Access Token. You can use it to access the Google API.
-				const credential = GoogleAuthProvider.credentialFromResult(result);
-				const token = credential.accessToken;
-				// The signed-in user info.
-				const user = result.user;
-				// IdP data available using getAdditionalUserInfo(result)
-				// ...
-			})
-			.catch((error) => {
-				// Handle Errors here.
-				const errorCode = error.code;
-				const errorMessage = error.message;
-				// The email of the user's account used.
-				const email = error.customData.email;
-				// The AuthCredential type that was used.
-				const credential = GoogleAuthProvider.credentialFromError(error);
-				// ...
-			});
-	};
+	// const GoogleLogin = () => {
+	// 	const auth = getAuth();
+	// 	signInWithPopup(auth, provider)
+	// 		.then((result) => {
+	// 			// This gives you a Google Access Token. You can use it to access the Google API.
+	// 			const credential = GoogleAuthProvider.credentialFromResult(result);
+	// 			const token = credential.accessToken;
+	// 			// The signed-in user info.
+	// 			const user = result.user;
+	// 			// IdP data available using getAdditionalUserInfo(result)
+	// 			// ...
+	// 		})
+	// 		.catch((error) => {
+	// 			// Handle Errors here.
+	// 			const errorCode = error.code;
+	// 			const errorMessage = error.message;
+	// 			// The email of the user's account used.
+	// 			const email = error.customData.email;
+	// 			// The AuthCredential type that was used.
+	// 			const credential = GoogleAuthProvider.credentialFromError(error);
+	// 			// ...
+	// 		});
+	// };
 
 	const EmailLogin = () => {
 		signInWithEmailAndPassword(auth, email, password)
@@ -305,12 +305,6 @@ function SignIn() {
 												</label>
 											</div>
 										</div>
-										<a
-											href="#"
-											class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500"
-										>
-											Forgot password?
-										</a>
 									</div>
 									<button
 										type="submit"
