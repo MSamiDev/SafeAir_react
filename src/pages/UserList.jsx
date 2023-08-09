@@ -11,7 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
-mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
+mapboxgl.accessToken = 'pk.eyJ1IjoibXNhbWlkZXYiLCJhIjoiY2xqc213cDdlMGFxbzNocXNyeTc4MGhlMyJ9.Gl7IzxtX3SOQ8fcHNwTpJw';
 
 const UserList = () => {
 	const [users, setUsers] = useState([]);
