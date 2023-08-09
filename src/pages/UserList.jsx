@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import logo from "../assets/safeair.png";
 import emp from "../assets/teamwork.png";
 import "leaflet/dist/leaflet.css";
-import mapboxgl from "mapbox-gl";
+import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 import "mapbox-gl/dist/mapbox-gl.css";
 
 import { getDatabase, ref, onValue } from "firebase/database";
