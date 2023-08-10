@@ -22,12 +22,12 @@ const Header = () => {
 							<li className="p-4 h-full flex justify-center items-center hover:text-blue-500 hover:underline duration-300 ease-in ">
 								<Link to={"/signin"}>Admin Console</Link>
 							</li>
-							<li className="p-4 h-full flex justify-center items-center hover:text-blue-500 hover:underline duration-300 ease-in">
+							{/* <li className="p-4 h-full flex justify-center items-center hover:text-blue-500 hover:underline duration-300 ease-in">
 								<Link to={"/createemployee"}>Create Employees</Link>
 							</li>
 							<li className="p-4 h-full flex justify-center items-center hover:text-blue-500 hover:underline duration-300 ease-in">
 								<Link to={"/employees"}>View Employees</Link>
-							</li>
+							</li> */}
 							<li className="font-extrabold text-3xl font-serif p-4 h-full flex justify-center items-center hover:text-blue-500 hover:underline duration-300 ease-in">
 								<Link to={"/signin"}>Sign in</Link>
 							</li>
@@ -55,12 +55,12 @@ const Header = () => {
 								<li className="p-4 w-full text-center hover:text-blue-500 hover:underline">
 									<Link to={"/signin"}>Admin Console</Link>
 								</li>
-								<li className="p-4 w-full text-center hover:text-blue-500 hover:underline">
+								{/* <li className="p-4 w-full text-center hover:text-blue-500 hover:underline">
 									<Link to={"/createemployee"}>Create Employees</Link>
 								</li>
 								<li className="p-4 w-full text-center hover:text-blue-500 hover:underline">
 									<Link to={"/employees"}>View Employees</Link>
-								</li>
+								</li> */}
 								<li className="font-extrabold text-3xl font-serif p-4 w-full text-center hover:text-blue-500 hover:underline">
 									<Link to={"/signin"}>Sign in</Link>
 								</li>
